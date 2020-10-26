@@ -311,7 +311,7 @@ if __name__=='__main__':
         'n_epochs':3000,
         'criterion':'CrossEntropy',
         'patience':50,
-        'device':torch.device("cuda:2"),
+        #'device':torch.device("cuda:2"),
         'figure_dir':'figures'
     }
     
