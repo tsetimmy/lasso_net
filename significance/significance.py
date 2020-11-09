@@ -22,6 +22,7 @@ def main():
     #parser.add_argument('--figure_dir', type=str, default='')
     parser.add_argument('--n_bootstraps', type=int, default=100)
     parser.add_argument('--weakness', type=float, default=.8)
+    parser.add_argument('--perm', type=str, choices=['original', 'permuted'], default='original')
     args = parser.parse_args()
 
     print(sys.argv)
@@ -35,9 +36,10 @@ def main():
     n, p = X_train.shape
     X_train_perm = X_train.copy()
     y_train_perm = y_train.copy()
+    if args.perm == 'permuted':
+        np.random.shuffle(y_train_perm)
     m = int(np.floor(n / 2.))
 
-    name = 'original'
     figure_dir = str(datetime.datetime.now()).replace(' ', ',') + '_' + str(uuid.uuid4())
     if not os.path.exists(figure_dir):
         os.makedirs(figure_dir)
@@ -47,7 +49,7 @@ def main():
         X_train_perm, y_train_perm = unison_shuffled_copies(X_train_perm, y_train_perm)
         weights = 1. - (1. - weakness) * np.random.randint(2, size=p)
 
-        lassonet_trainer(name + '_' + str(uuid.uuid4()),
+        lassonet_trainer(args.perm + '_' + str(uuid.uuid4()),
                          (weights * X_train_perm[:m], y_train_perm[:m]),
                          test,
                          utils={'figure_dir': figure_dir})
