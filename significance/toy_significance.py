@@ -36,6 +36,7 @@ def main():
     test_size = 10
 
     X, y, b = generate_data(n + test_size, p, n_b=n_b, noise_var=noise_var, seed=123)
+    y = np.expand_dims(y, axis=-1)
     X_test = X[n:n + test_size]
     y_test = y[n:n + test_size]
     X_train = X[:n]
